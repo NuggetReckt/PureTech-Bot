@@ -1,5 +1,6 @@
 package fr.nuggetreckt.puretech;
 
+import fr.nuggetreckt.puretech.guild.GuildsStatsHandler;
 import fr.nuggetreckt.puretech.listener.MessageListener;
 import fr.nuggetreckt.puretech.listener.ReadyListener;
 import fr.nuggetreckt.puretech.util.Config;
@@ -19,6 +20,7 @@ public class PureTech {
     private JDA jda;
 
     private final Config config;
+    private final GuildsStatsHandler guildsStatsHandler;
 
     public PureTech() {
         instance = this;
@@ -27,6 +29,7 @@ public class PureTech {
         logger.info("Lancement du bot...");
 
         this.config = new Config();
+        this.guildsStatsHandler = new GuildsStatsHandler(this);
 
         buildJDA();
     }
@@ -75,7 +78,6 @@ public class PureTech {
         return token;
     }
 
-
     public PureTech getInstance() {
         return instance;
     }
@@ -90,6 +92,10 @@ public class PureTech {
 
     public Config getConfig() {
         return config;
+    }
+
+    public GuildsStatsHandler getGuildStatsHandler() {
+        return guildsStatsHandler;
     }
 
     public String getVersion() {

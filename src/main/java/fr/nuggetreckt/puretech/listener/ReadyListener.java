@@ -21,6 +21,9 @@ public class ReadyListener implements EventListener {
         instance.getLogger().info(instance.getJDA().getSelfUser().getName() + " v" + instance.getVersion() + " lancé avec succès.");
         instance.getLogger().info(instance.getJDA().getEventManager().getRegisteredListeners().size() + " listeners chargés.");
         instance.getLogger().info(instance.getJDA().getGuilds().size() + " serveurs utilisent le 1.2L PureTech");
+        instance.getLogger().info("Registering guilds statistics...");
+
+        instance.getGuildStatsHandler().setupGuildsStats();
 
         System.out.println("""
                                       -#%@#=                      \s
