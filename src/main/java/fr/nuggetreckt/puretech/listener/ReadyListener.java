@@ -18,12 +18,10 @@ public class ReadyListener implements EventListener {
     public void onEvent(@NotNull GenericEvent event) {
         if (!(event instanceof ReadyEvent)) return;
 
-        instance.getLogger().info(instance.getJDA().getSelfUser().getName() + " v" + instance.getVersion() + " lancé avec succès.");
-        instance.getLogger().info(instance.getJDA().getEventManager().getRegisteredListeners().size() + " listeners chargés.");
-        instance.getLogger().info(instance.getJDA().getGuilds().size() + " serveurs utilisent le 1.2L PureTech");
+        instance.getLogger().info(instance.getJDA().getSelfUser().getName() + " v" + instance.getVersion() + " launched successfully.");
+        instance.getLogger().info(instance.getJDA().getEventManager().getRegisteredListeners().size() + " loaded listeners.");
         instance.getLogger().info("Registering guilds statistics...");
-
-        instance.getGuildStatsHandler().setupGuildsStats();
+        instance.getGuildsStatsHandler().setupGuildsStats();
 
         System.out.println("""
                                       -#%@#=                      \s
@@ -63,5 +61,9 @@ public class ReadyListener implements EventListener {
                                                                   \s
                                   1.2L PureTech
                 """);
+
+        instance.getLogger().info("Starting tasks...");
+        instance.getTasksHandler().runTasks();
+        instance.getLogger().info("Tasks started.");
     }
 }

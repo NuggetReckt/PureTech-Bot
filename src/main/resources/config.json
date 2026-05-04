@@ -1,0 +1,22 @@
+{
+    "token": "",
+    "guild_id": "",
+    "channels": [
+        {
+            "id": "bot",
+            "channel_id": ""
+        }
+    ],
+    "roles": [
+        {
+            "id": "member",
+            "role_id": ""
+        }
+    ],
+    "trigger_count": 10,
+    "messages": [
+        ""
+    ],
+    "version": "0.1",
+    "debug": false
+}
