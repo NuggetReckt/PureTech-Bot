@@ -3,6 +3,7 @@ package fr.nuggetreckt.puretech.task;
 import fr.nuggetreckt.puretech.PureTech;
 import fr.nuggetreckt.puretech.task.impl.ChangeStatusTask;
 import fr.nuggetreckt.puretech.task.impl.SendEmbedsTask;
+import fr.nuggetreckt.puretech.task.impl.YoutubePollerTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class TasksHandler {
     private void setupTasks() {
         setupTask(new ChangeStatusTask(instance));
         setupTask(new SendEmbedsTask(instance));
+        setupTask(new YoutubePollerTask(instance));
     }
 
     public void runTasks() {

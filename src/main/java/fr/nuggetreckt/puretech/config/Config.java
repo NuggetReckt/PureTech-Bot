@@ -32,6 +32,8 @@ public class Config {
     private String configVersion;
     @Getter
     private boolean debug;
+    @Getter
+    private String youtubeChannelID;
 
     @Getter
     private long triggerCount;
@@ -89,6 +91,7 @@ public class Config {
         guildId = (String) config.get("guild_id");
         debug = (boolean) config.get("debug");
         triggerCount = (Long) config.get("trigger_count");
+        youtubeChannelID = (String) config.get("youtube_channel_id");
 
         JSONArray jsonChannels = (JSONArray) config.get("channels");
         JSONArray jsonRoles = (JSONArray) config.get("roles");
@@ -142,6 +145,18 @@ public class Config {
 
     public MessageChannel getRoleChannel() {
         return getChannel("role");
+    }
+
+    public MessageChannel getAnnouncementChannel() {
+        return getChannel("announcements");
+    }
+
+    public MessageChannel getGeneralChannel() {
+        return getChannel("general");
+    }
+
+    public MessageChannel getRulesChannel() {
+        return getChannel("rules");
     }
 
     public Role getRole(String id) {

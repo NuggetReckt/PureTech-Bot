@@ -13,6 +13,7 @@ public class ReloadCommand extends Command {
 
     public ReloadCommand(PureTech instance) {
         super("reload", "Reload la configuration du bot.");
+
         this.instance = instance;
     }
 
@@ -26,9 +27,9 @@ public class ReloadCommand extends Command {
                     .queue();
             return;
         }
-        event.reply("> Reload de la configuration.").setEphemeral(true)
-                .queue();
-
         instance.getConfigHandler().reload();
+
+        event.reply("> Configuration reload avec succès.").setEphemeral(true)
+                .queue();
     }
 }

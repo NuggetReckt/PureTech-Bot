@@ -1,15 +1,60 @@
 {
     "token": "",
     "guild_id": "",
+    "youtube_channel_id": "",
     "channels": [
         {
             "id": "bot",
+            "channel_id": ""
+        },
+        {
+            "id": "verify",
+            "channel_id": ""
+        },
+        {
+            "id": "role",
+            "channel_id": ""
+        },
+        {
+            "id": "rules",
+            "channel_id": ""
+        },
+        {
+            "id": "general",
+            "channel_id": ""
+        },
+        {
+            "id": "announcements",
             "channel_id": ""
         }
     ],
     "roles": [
         {
             "id": "member",
+            "role_id": ""
+        },
+        {
+            "id": "ping_polls",
+            "role_id": ""
+        },
+        {
+            "id": "airline_pilot",
+            "role_id": ""
+        },
+        {
+            "id": "fighter_pilot",
+            "role_id": ""
+        },
+        {
+            "id": "aviation_enthusiast",
+            "role_id": ""
+        },
+        {
+            "id": "engineer",
+            "role_id": ""
+        },
+        {
+            "id": "puretech_owner",
             "role_id": ""
         }
     ],

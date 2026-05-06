@@ -5,6 +5,8 @@ import fr.nuggetreckt.puretech.task.Task;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
+import net.dv8tion.jda.api.components.selections.SelectOption;
+import net.dv8tion.jda.api.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
@@ -32,7 +34,7 @@ public class SendEmbedsTask extends Task {
         MessageChannel roleChannel = instance.getConfigHandler().getConfig().getRoleChannel();
         MessageChannel verifyChannel = instance.getConfigHandler().getConfig().getVerifyChannel();
 
-//        roleEmbedSender(roleChannel);
+        roleEmbedSender(roleChannel);
         verifyEmbedSender(verifyChannel);
     }
 
@@ -45,37 +47,39 @@ public class SendEmbedsTask extends Task {
         EmbedBuilder takeRoleEmbed = new EmbedBuilder();
 
         takeRoleEmbed.setTitle("\uD83D\uDCCC ・ Rôles")
-                .setDescription("Sélectionne les rôles à l'aide des boutons ci-dessous pour avoir des pings personnalisés et avoir accès à des salons spécifiques !")
-                .addField("__Mentions__", """
-                        \uD83D\uDCCA ・ Sondages
-                        \uD83D\uDCE2 ・ Annonces
-                        \uD83C\uDF89 ・ Events
-                        \uD83D\uDCDA ・ Informations intéressantes
-                        """, true)
-                .addField("__Accès salons spécifiques__", """
-                        \uD83C\uDF33 ・ Minecraft
-                        \uD83D\uDD28 ・ Hardware/Tech
-                        """, true)
-                .setColor(new Color(255, 255, 255, 1))
-                .setFooter("1.2L PureTech - NuggetReckt", "https://media.discordapp.net/attachments/712679066872053810/1017822877799686225/unknown.png")
-                .setTimestamp(new Date().toInstant());
+            .setDescription("Sélectionne les rôles à l'aide du menu déroulant ci-dessous pour avoir des pings personnalisés et des rôles qui te correspondent !")
+            .addField("__Mentions__", """
+                \uD83D\uDCCA ・ Sondages
+                """, true)
+            .addField("__Pour toi__", """
+                ✈️ ・ Pilote de ligne
+                🛩️ ・ Pilote de chasse
+                🪂 ・ Passionné d'aviation
+                🛠️ ・ Ingénieur
+                🚀 ・ PureTech Owner
+                """, true)
+            .setColor(new Color(255, 255, 255, 1))
+            .setFooter("1.2L PureTech - NuggetReckt", "https://cdn.discordapp.com/app-icons/1323351003713634304/ca9d46eba62afa52b42e2b3392c6f531.png?size=256")
+            .setTimestamp(new Date().toInstant());
 
         takeRoleChannel.sendMessageEmbeds(takeRoleEmbed.build())
-                .addComponents(
-                        ActionRow.of(
-                                Button.primary("ROLE_POLLS", Emoji.fromFormatted("\uD83D\uDCCA")),
-                                Button.primary("ROLE_ANNOUNCEMENTS", Emoji.fromFormatted("\uD83D\uDCE2")),
-                                Button.primary("ROLE_EVENTS", Emoji.fromFormatted("\uD83C\uDF89")),
-                                Button.primary("ROLE_INTERESTING_INFORMATIONS", Emoji.fromFormatted("\uD83D\uDCDA"))
+            .addComponents(
+                ActionRow.of(
+                    StringSelectMenu.create("roles")
+                        .setPlaceholder("Sélectionne un rôle dans la liste")
+                        .setMaxValues(25)
+                        .addOptions(
+                            SelectOption.of("Ping Sondages", "ping_polls").withDescription("Choisi ce rôle si tu souhaites être notifié lors des sondages").withEmoji(Emoji.fromFormatted("\uD83D\uDCCA")),
+                            SelectOption.of("Pilote de ligne", "airline_pilot").withEmoji(Emoji.fromFormatted("U+2708")),
+                            SelectOption.of("Pilote de chasse", "fighter_pilot").withEmoji(Emoji.fromFormatted("U+1F6E9")),
+                            SelectOption.of("Passionné d'aviation", "aviation_enthusiast").withEmoji(Emoji.fromFormatted("U+1FA82")),
+                            SelectOption.of("Ingénieur", "engineer").withEmoji(Emoji.fromFormatted("U+1F6E0")),
+                            SelectOption.of("PureTech Owner", "puretech_owner").withEmoji(Emoji.fromFormatted("U+1F680"))
                         )
+                        .build()
                 )
-                .addComponents(
-                        ActionRow.of(
-                                Button.primary("ROLE_MINECRAFT", Emoji.fromFormatted("\uD83C\uDF33")),
-                                Button.primary("ROLE_HARDWARE_TECH", Emoji.fromFormatted("\uD83D\uDD28"))
-                        )
-                )
-                .queue();
+            )
+            .queue();
     }
 
     private void verifyEmbedSender(MessageChannel verifyChannel) {
@@ -87,18 +91,18 @@ public class SendEmbedsTask extends Task {
         EmbedBuilder verifyEmbed = new EmbedBuilder();
 
         verifyEmbed.setTitle("\uD83D\uDEE1 ・ Vérification")
-                .setDescription("Bienvenue sur le discord ! Vérifie-toi en cliquant sur le bouton ci-dessous !")
-                .setImage("https://media.discordapp.net/attachments/712679066872053810/1008100888398798978/unknown.png?width=554&height=554")
-                .setColor(new Color(255, 255, 255, 1))
-                .setFooter("1.2L PureTech - NuggetReckt", "https://media.discordapp.net/attachments/712679066872053810/1017822877799686225/unknown.png")
-                .setTimestamp(new Date().toInstant());
+            .setDescription("Bienvenue sur le discord de la communauté de **Craftime** !\nVérifie-toi en cliquant sur le bouton ci-dessous.")
+            .setImage("https://media.discordapp.net/attachments/1099493674582286336/1501279284608897024/image.jpg?ex=69fb7ec9&is=69fa2d49&hm=cfbe1318aec6acbe35ae2bf69810693f6a03f9b51e049760318fbd96d4fc40d0&=&format=webp&width=812&height=930")
+            .setColor(new Color(255, 255, 255, 1))
+            .setFooter("1.2L PureTech - NuggetReckt", "https://cdn.discordapp.com/app-icons/1323351003713634304/ca9d46eba62afa52b42e2b3392c6f531.png?size=256")
+            .setTimestamp(new Date().toInstant());
 
         verifyChannel.sendMessageEmbeds(verifyEmbed.build())
-                .addComponents(
-                        ActionRow.of(
-                                Button.primary("VERIFY", "Acceder au Discord").withEmoji(Emoji.fromFormatted("✅"))
-                        )
+            .addComponents(
+                ActionRow.of(
+                    Button.primary("VERIFY", "Acceder au Discord").withEmoji(Emoji.fromFormatted("\uD83D\uDEE1"))
                 )
-                .queue();
+            )
+            .queue();
     }
 }

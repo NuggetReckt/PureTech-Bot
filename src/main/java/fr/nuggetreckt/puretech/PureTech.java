@@ -5,9 +5,7 @@ import fr.nuggetreckt.puretech.command.CommandListener;
 import fr.nuggetreckt.puretech.command.CommandManager;
 import fr.nuggetreckt.puretech.config.ConfigHandler;
 import fr.nuggetreckt.puretech.guild.GuildsStatsHandler;
-import fr.nuggetreckt.puretech.listener.MessageListener;
-import fr.nuggetreckt.puretech.listener.ReadyListener;
-import fr.nuggetreckt.puretech.listener.ShutdownListener;
+import fr.nuggetreckt.puretech.listener.*;
 import fr.nuggetreckt.puretech.task.TasksHandler;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
@@ -70,11 +68,11 @@ public class PureTech {
 
     private void buildJDA() {
         jda = JDABuilder.createDefault(configHandler.getConfig().getToken())
-                .enableIntents(GatewayIntent.GUILD_MEMBERS)
-                .enableIntents(GatewayIntent.GUILD_MESSAGES)
-                .enableIntents(GatewayIntent.GUILD_PRESENCES)
-                .enableIntents(GatewayIntent.MESSAGE_CONTENT)
-                .build();
+            .enableIntents(GatewayIntent.GUILD_MEMBERS)
+            .enableIntents(GatewayIntent.GUILD_MESSAGES)
+            .enableIntents(GatewayIntent.GUILD_PRESENCES)
+            .enableIntents(GatewayIntent.MESSAGE_CONTENT)
+            .build();
 
         registerEvents();
     }
@@ -84,6 +82,9 @@ public class PureTech {
         jda.addEventListener(new ReadyListener(this));
         jda.addEventListener(new ShutdownListener(this));
         jda.addEventListener(new MessageListener(this));
+        jda.addEventListener(new MemberJoinListener(this));
+        jda.addEventListener(new StringSelectListener(this));
+        jda.addEventListener(new AntiSpamListener());
 
         //Commands/Buttons events
         jda.addEventListener(new CommandListener(this));
