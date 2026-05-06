@@ -9,6 +9,7 @@ import fr.nuggetreckt.puretech.task.Task;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import org.jetbrains.annotations.NotNull;
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.net.URL;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +39,7 @@ public class YoutubePollerTask extends Task {
     @Override
     protected void setup() {
         feedUrl = "https://www.youtube.com/feeds/videos.xml?channel_id=" + instance.getConfigHandler().getConfig().getYoutubeChannelID();
-        announcementsChannel = instance.getConfigHandler().getConfig().getAnnouncementChannel();
+        announcementsChannel = instance.getConfigHandler().getConfig().getAnnouncementsChannel();
     }
 
     @Override
@@ -51,7 +53,7 @@ public class YoutubePollerTask extends Task {
             return;
         }
 
-        for (SyndEntry entry : feed.getEntries()) {
+        for (SyndEntry entry : feed.getEntries().reversed()) {
             String videoId = entry.getUri();
 
             if (!postedVideoIds.contains(videoId)) {
@@ -75,7 +77,9 @@ public class YoutubePollerTask extends Task {
             .setFooter("1.2L PureTech - NuggetReckt", "https://cdn.discordapp.com/app-icons/1323351003713634304/ca9d46eba62afa52b42e2b3392c6f531.png?size=256")
             .setTimestamp(new Date().toInstant());
 
-        announcementsChannel.sendMessageEmbeds(builder.build())
+        announcementsChannel.sendMessage("@everyone")
+            .setAllowedMentions(EnumSet.of(Message.MentionType.EVERYONE))
+            .setEmbeds(builder.build())
             .addComponents(
                 ActionRow.of(
                     Button.link(url, "Visionner la vidéo").withEmoji(Emoji.fromFormatted("📺"))

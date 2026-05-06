@@ -147,7 +147,7 @@ public class Config {
         return getChannel("role");
     }
 
-    public MessageChannel getAnnouncementChannel() {
+    public MessageChannel getAnnouncementsChannel() {
         return getChannel("announcements");
     }
 

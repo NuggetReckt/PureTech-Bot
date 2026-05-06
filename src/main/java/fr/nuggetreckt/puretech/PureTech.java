@@ -63,32 +63,36 @@ public class PureTech {
             getJDA().shutdown();
         });
 
-        buildJDA();
+        try {
+            buildJDA();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void buildJDA() {
+    private void buildJDA() throws InterruptedException {
         jda = JDABuilder.createDefault(configHandler.getConfig().getToken())
             .enableIntents(GatewayIntent.GUILD_MEMBERS)
             .enableIntents(GatewayIntent.GUILD_MESSAGES)
             .enableIntents(GatewayIntent.GUILD_PRESENCES)
             .enableIntents(GatewayIntent.MESSAGE_CONTENT)
+
+            .addEventListeners(
+                //Basic events
+                new ReadyListener(this),
+                new ShutdownListener(this),
+                new MessageListener(this),
+                new MemberJoinListener(this),
+                new StringSelectListener(this),
+                new AntiSpamListener(),
+
+                //Commands/Buttons events
+                new CommandListener(this),
+                new ButtonListener(this)
+            )
             .build();
 
-        registerEvents();
-    }
-
-    private void registerEvents() {
-        //Basic events
-        jda.addEventListener(new ReadyListener(this));
-        jda.addEventListener(new ShutdownListener(this));
-        jda.addEventListener(new MessageListener(this));
-        jda.addEventListener(new MemberJoinListener(this));
-        jda.addEventListener(new StringSelectListener(this));
-        jda.addEventListener(new AntiSpamListener());
-
-        //Commands/Buttons events
-        jda.addEventListener(new CommandListener(this));
-        jda.addEventListener(new ButtonListener(this));
+        jda.awaitReady();
     }
 
     public JDA getJDA() {

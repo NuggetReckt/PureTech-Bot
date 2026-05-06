@@ -1,6 +1,7 @@
 package fr.nuggetreckt.puretech.config.entity;
 
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import org.jetbrains.annotations.NotNull;
 
 public class ChannelConfig extends JDAEntity {
@@ -11,6 +12,6 @@ public class ChannelConfig extends JDAEntity {
 
     @Override
     public Object getJDAEntity(@NotNull JDA jda) {
-        return jda.getTextChannelById(discordId);
+        return jda.getChannelById(MessageChannel.class, discordId);
     }
 }
