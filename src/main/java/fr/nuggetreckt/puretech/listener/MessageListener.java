@@ -2,7 +2,6 @@ package fr.nuggetreckt.puretech.listener;
 
 import fr.nuggetreckt.puretech.PureTech;
 import fr.nuggetreckt.puretech.guild.GuildStats;
-import fr.nuggetreckt.puretech.util.Config;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -23,17 +22,17 @@ public class MessageListener extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if (event.getAuthor().isBot()) return;
-        GuildStats guildStats = instance.getGuildStatsHandler().getGuildStatsById(event.getGuild().getIdLong());
+        GuildStats guildStats = instance.getGuildsStatsHandler().getGuildStatsById(event.getGuild().getIdLong());
 
         guildStats.setMessageCount(guildStats.getMessageCount() + 1);
-        if (guildStats.getMessageCount() >= Config.TRIGGER_COUNT) {
+        if (guildStats.getMessageCount() >= instance.getConfigHandler().getConfig().getTriggerCount()) {
             event.getChannel().sendMessage("> " + getRandomMessage(guildStats)).queue();
             guildStats.setMessageCount(0);
         }
     }
 
     private String getRandomMessage(@NotNull GuildStats stats) {
-        List<String> messages = instance.getConfig().getMessages();
+        List<String> messages = instance.getConfigHandler().getConfig().getMessages();
         String message = messages.get(random.nextInt(messages.size()));
         String lastMessage = stats.getLastMessage();
 
