@@ -62,6 +62,12 @@ public class ReadyListener implements EventListener {
                                   1.2L PureTech
                 """);
 
+        new Thread(() -> {
+            instance.getLogger().info("Loading data...");
+            instance.getDataHandler().init();
+            instance.getLogger().info("Data loaded successfully.");
+        }).start();
+
         instance.getLogger().info("Starting tasks...");
         instance.getTasksHandler().runTasks();
         instance.getLogger().info("Tasks started.");
