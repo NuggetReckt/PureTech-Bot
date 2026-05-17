@@ -18,8 +18,8 @@ public class ReadyListener implements EventListener {
     public void onEvent(@NotNull GenericEvent event) {
         if (!(event instanceof ReadyEvent)) return;
 
-        instance.getLogger().info(instance.getJDA().getSelfUser().getName() + " v" + instance.getVersion() + " launched successfully.");
-        instance.getLogger().info(instance.getJDA().getEventManager().getRegisteredListeners().size() + " loaded listeners.");
+        instance.getLogger().info("{} v{} launched successfully.", instance.getJDA().getSelfUser().getName(), instance.getVersion());
+        instance.getLogger().info("{} loaded listeners.", instance.getJDA().getEventManager().getRegisteredListeners().size());
         instance.getLogger().info("Registering guilds statistics...");
         instance.getGuildsStatsHandler().setupGuildsStats();
 
