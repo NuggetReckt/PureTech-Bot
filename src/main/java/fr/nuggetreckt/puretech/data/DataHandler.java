@@ -55,7 +55,6 @@ public class DataHandler {
     public void saveAndExit() {
         Thread thread = new Thread(() -> {
             instance.getLogger().info("Saving stats data...");
-//            Queue<Member> members = instance.loadMembers();
 
             save();
             instance.getLogger().info("Stats saved.");
