@@ -18,8 +18,6 @@ import java.awt.*;
 import java.net.URL;
 import java.util.Date;
 import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
 
 public class YoutubePollerTask extends Task {
 
@@ -27,13 +25,11 @@ public class YoutubePollerTask extends Task {
 
     private String feedUrl;
     private MessageChannel announcementsChannel;
-    private final Set<String> postedVideoIds;
 
     public YoutubePollerTask(PureTech instance) {
         super(5, 240);
 
         this.instance = instance;
-        this.postedVideoIds = new HashSet<>();
     }
 
     @Override
@@ -56,8 +52,8 @@ public class YoutubePollerTask extends Task {
         for (SyndEntry entry : feed.getEntries().reversed()) {
             String videoId = entry.getUri();
 
-            if (!postedVideoIds.contains(videoId)) {
-                postedVideoIds.add(videoId);
+            if (!instance.getDataHandler().getJsonCache().getNotifiedVideosIds().contains(videoId)) {
+                instance.getDataHandler().getJsonCache().getNotifiedVideosIds().add(videoId);
                 sendEmbedNotification(entry);
             }
         }

@@ -4,16 +4,21 @@ import fr.nuggetreckt.puretech.button.ButtonListener;
 import fr.nuggetreckt.puretech.command.CommandListener;
 import fr.nuggetreckt.puretech.command.CommandManager;
 import fr.nuggetreckt.puretech.config.ConfigHandler;
+import fr.nuggetreckt.puretech.data.DataHandler;
 import fr.nuggetreckt.puretech.guild.GuildsStatsHandler;
 import fr.nuggetreckt.puretech.listener.*;
 import fr.nuggetreckt.puretech.task.TasksHandler;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sun.misc.Signal;
+
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class PureTech {
 
@@ -27,6 +32,8 @@ public class PureTech {
 
     @Getter
     private final ConfigHandler configHandler;
+    @Getter
+    private final DataHandler dataHandler;
     @Getter
     private final TasksHandler tasksHandler;
     @Getter
@@ -44,6 +51,7 @@ public class PureTech {
         logger.info("Setting up configuration file...");
 
         this.configHandler = new ConfigHandler(this);
+        this.dataHandler = new DataHandler(this);
         this.tasksHandler = new TasksHandler(this);
         this.commandManager = new CommandManager(this);
         this.guildsStatsHandler = new GuildsStatsHandler(this);
@@ -60,7 +68,7 @@ public class PureTech {
                 System.exit(1);
             }
             isShuttingDown = true;
-            getJDA().shutdown();
+            instance.getDataHandler().saveAndExit();
         });
 
         try {
@@ -93,6 +101,13 @@ public class PureTech {
             .build();
 
         jda.awaitReady();
+    }
+
+    public Queue<Member> loadMembers() {
+        Queue<Member> members = new ConcurrentLinkedDeque<>();
+
+        configHandler.getConfig().getGuild().loadMembers().onSuccess(members::addAll);
+        return members;
     }
 
     public JDA getJDA() {

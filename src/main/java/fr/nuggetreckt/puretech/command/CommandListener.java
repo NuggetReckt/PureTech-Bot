@@ -14,8 +14,11 @@ public class CommandListener extends ListenerAdapter {
 
     private final PureTech instance;
 
+    private boolean hasLoaded;
+
     public CommandListener(@NotNull PureTech instance) {
         this.instance = instance;
+        this.hasLoaded = false;
     }
 
     @Override
@@ -39,7 +42,10 @@ public class CommandListener extends ListenerAdapter {
 
     @Override
     public void onGuildReady(@NotNull GuildReadyEvent event) {
+        if (hasLoaded) return;
+
         instance.getLogger().info("Registering commands...");
         instance.getCommandManager().registerCommands(event);
+        hasLoaded = true;
     }
 }
