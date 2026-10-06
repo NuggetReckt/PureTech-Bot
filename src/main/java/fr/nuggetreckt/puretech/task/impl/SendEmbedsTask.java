@@ -45,7 +45,7 @@ public class SendEmbedsTask extends Task {
         EmbedBuilder takeRoleEmbed = new EmbedBuilder();
 
         takeRoleEmbed.setTitle("\uD83D\uDCCC ・ Rôles")
-            .setDescription("Sélectionne les rôles à l'aide du menu déroulant ci-dessous pour avoir des pings personnalisés et des rôles qui te correspondent !")
+            .setDescription("Sélectionne les rôles à l'aide du menu déroulant pour avoir des pings personnalisés et des rôles qui te correspondent !")
             .addField("__Mentions__", """
                 \uD83D\uDCCA ・ Sondages
                 """, true)

@@ -1,6 +1,7 @@
 package fr.nuggetreckt.puretech.listener;
 
-import fr.nuggetreckt.puretech.PureTech;
+import fr.nuggetreckt.puretech.button.impl.RoleSelect;
+import fr.nuggetreckt.puretech.button.impl.RoleSelectButton;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
@@ -14,10 +15,7 @@ import java.util.Set;
 
 public class StringSelectListener extends ListenerAdapter {
 
-    private final PureTech instance;
-
-    public StringSelectListener(PureTech instance) {
-        this.instance = instance;
+    public StringSelectListener() {
     }
 
     @Override
@@ -25,19 +23,15 @@ public class StringSelectListener extends ListenerAdapter {
         if (event.getComponentId().equals("roles")) {
             List<Role> toAdd = new ArrayList<>();
             List<Role> toRemove = new ArrayList<>();
-            List<Role> roles = new ArrayList<>();
             Set<String> selected = new HashSet<>(event.getValues());
             Member member = event.getMember();
 
-            for (int i = 0; i < event.getValues().size(); i++) {
-                Role role = instance.getConfigHandler().getConfig().getRole(event.getValues().get(i));
+            for (RoleSelect r : RoleSelectButton.ROLES) {
+                Role role = r.getRole();
 
                 if (role == null) continue;
-                roles.add(role);
-            }
 
-            for (Role role : roles) {
-                boolean wants = selected.contains(role.getId());
+                boolean wants = selected.contains(r.getConfigId());
                 boolean has = member.getRoles().contains(role);
 
                 if (wants && !has) toAdd.add(role);

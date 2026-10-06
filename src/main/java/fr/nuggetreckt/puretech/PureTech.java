@@ -91,7 +91,7 @@ public class PureTech {
                 new ShutdownListener(this),
                 new MessageListener(this),
                 new MemberJoinListener(this),
-                new StringSelectListener(this),
+                new StringSelectListener(),
                 new AntiSpamListener(),
 
                 //Commands/Buttons events

@@ -24,7 +24,7 @@ public class ButtonListener extends ListenerAdapter {
 
     private void registerButtons() {
         registerButton(new VerifyButton(instance));
-        registerButton(new RoleSelectButton(instance));
+        registerButton(new RoleSelectButton());
     }
 
     private void registerButton(Button button) {
