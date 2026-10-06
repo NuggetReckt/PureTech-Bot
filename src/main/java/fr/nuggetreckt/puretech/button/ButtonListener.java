@@ -1,6 +1,7 @@
 package fr.nuggetreckt.puretech.button;
 
 import fr.nuggetreckt.puretech.PureTech;
+import fr.nuggetreckt.puretech.button.impl.RoleSelectButton;
 import fr.nuggetreckt.puretech.button.impl.VerifyButton;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
@@ -23,6 +24,7 @@ public class ButtonListener extends ListenerAdapter {
 
     private void registerButtons() {
         registerButton(new VerifyButton(instance));
+        registerButton(new RoleSelectButton(instance));
     }
 
     private void registerButton(Button button) {
