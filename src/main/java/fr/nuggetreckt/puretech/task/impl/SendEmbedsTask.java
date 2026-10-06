@@ -5,8 +5,6 @@ import fr.nuggetreckt.puretech.task.Task;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
-import net.dv8tion.jda.api.components.selections.SelectOption;
-import net.dv8tion.jda.api.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
@@ -47,7 +45,7 @@ public class SendEmbedsTask extends Task {
         EmbedBuilder takeRoleEmbed = new EmbedBuilder();
 
         takeRoleEmbed.setTitle("\uD83D\uDCCC ・ Rôles")
-            .setDescription("Sélectionne les rôles à l'aide du menu déroulant ci-dessous pour avoir des pings personnalisés et des rôles qui te correspondent !")
+            .setDescription("Sélectionne les rôles à l'aide du menu déroulant pour avoir des pings personnalisés et des rôles qui te correspondent !")
             .addField("__Mentions__", """
                 \uD83D\uDCCA ・ Sondages
                 """, true)
@@ -65,18 +63,7 @@ public class SendEmbedsTask extends Task {
         takeRoleChannel.sendMessageEmbeds(takeRoleEmbed.build())
             .addComponents(
                 ActionRow.of(
-                    StringSelectMenu.create("roles")
-                        .setPlaceholder("Sélectionne un rôle dans la liste")
-                        .setMaxValues(25)
-                        .addOptions(
-                            SelectOption.of("Ping Sondages", "ping_polls").withDescription("Choisi ce rôle si tu souhaites être notifié lors des sondages").withEmoji(Emoji.fromFormatted("\uD83D\uDCCA")),
-                            SelectOption.of("Pilote de ligne", "airline_pilot").withEmoji(Emoji.fromFormatted("U+2708")),
-                            SelectOption.of("Pilote de chasse", "fighter_pilot").withEmoji(Emoji.fromFormatted("U+1F6E9")),
-                            SelectOption.of("Passionné d'aviation", "aviation_enthusiast").withEmoji(Emoji.fromFormatted("U+1FA82")),
-                            SelectOption.of("Ingénieur", "engineer").withEmoji(Emoji.fromFormatted("U+1F6E0")),
-                            SelectOption.of("PureTech Owner", "puretech_owner").withEmoji(Emoji.fromFormatted("U+1F680"))
-                        )
-                        .build()
+                    Button.primary("ROLE_SELECT", "Ouvrir le menu").withEmoji(Emoji.fromFormatted("\uD83D\uDCCC"))
                 )
             )
             .queue();

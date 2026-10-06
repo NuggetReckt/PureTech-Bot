@@ -1,6 +1,7 @@
 package fr.nuggetreckt.puretech.listener;
 
-import fr.nuggetreckt.puretech.PureTech;
+import fr.nuggetreckt.puretech.button.impl.RoleSelect;
+import fr.nuggetreckt.puretech.button.impl.RoleSelectButton;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
@@ -8,27 +9,33 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class StringSelectListener extends ListenerAdapter {
 
-    private final PureTech instance;
-
-    public StringSelectListener(PureTech instance) {
-        this.instance = instance;
+    public StringSelectListener() {
     }
 
     @Override
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
         if (event.getComponentId().equals("roles")) {
-            List<Role> roles = new ArrayList<>();
+            List<Role> toAdd = new ArrayList<>();
+            List<Role> toRemove = new ArrayList<>();
+            Set<String> selected = new HashSet<>(event.getValues());
             Member member = event.getMember();
 
-            for (int i = 0; i < event.getValues().size(); i++) {
-                Role role = instance.getConfigHandler().getConfig().getRole(event.getValues().get(i));
+            for (RoleSelect r : RoleSelectButton.ROLES) {
+                Role role = r.getRole();
 
                 if (role == null) continue;
-                roles.add(role);
+
+                boolean wants = selected.contains(r.getConfigId());
+                boolean has = member.getRoles().contains(role);
+
+                if (wants && !has) toAdd.add(role);
+                else if (!wants && has) toRemove.add(role);
             }
 
             if (member == null) {
@@ -36,25 +43,13 @@ public class StringSelectListener extends ListenerAdapter {
                 return;
             }
 
-            for (Role role : roles) {
-                if (!member.getRoles().contains(role)) {
-                    addRoleToMember(member, role);
-                } else {
-                    removeRoleFromMember(member, role);
-                }
-            }
-            event.reply("> Tes rôles ont été mis à jour").setEphemeral(true)
-                .queue();
+            event.deferEdit().queue();
+            event.getGuild().modifyMemberRoles(member, toAdd, toRemove).queue(
+                success -> event.getHook().editOriginal("> Tes rôles ont été mis à jour.")
+                    .setComponents().queue(),
+                error -> event.getHook().editOriginal("> Impossible de modifier tes rôles.")
+                    .setComponents().queue()
+            );
         }
-    }
-
-    private void addRoleToMember(@NotNull Member member, Role role) {
-        member.getGuild().addRoleToMember(member, role)
-            .queue();
-    }
-
-    private void removeRoleFromMember(@NotNull Member member, Role role) {
-        member.getGuild().removeRoleFromMember(member, role)
-            .queue();
     }
 }
